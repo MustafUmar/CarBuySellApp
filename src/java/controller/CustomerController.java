@@ -10,5 +10,7 @@ package controller;
  * @author MustiU
  */
 public class CustomerController {
-    
+    public void login(){
+        
+    }
 }
