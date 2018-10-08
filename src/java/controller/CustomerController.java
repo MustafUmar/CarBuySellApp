@@ -11,6 +11,7 @@ package controller;
  */
 public class CustomerController {
     public void login(){
+        String username = "abba";
         
     }
 }
