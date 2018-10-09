@@ -5,9 +5,14 @@
  */
 package controller;
 
+import java.util.List;
+import model.Car;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import service.CarService;
 
 /**
  *
@@ -16,10 +21,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value = "/cars")
 public class CarController {
+   
+    @Autowired
+    private CarService carService;
     
     @RequestMapping(method = RequestMethod.GET)
-    public String cars() {
-        return "cars";
+    public ModelAndView cars(ModelAndView model) {
+        List<Car> cars = carService.all();
+        model.addObject("cars",cars);
+        model.setViewName("cars");
+        return model;
     }
     
     

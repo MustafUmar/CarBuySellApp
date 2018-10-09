@@ -1,2 +1,6 @@
 build/web/WEB-INF/glassfish-web.xml
 nbproject/
+*.class
+*.properties
+/config/
+/dist/
