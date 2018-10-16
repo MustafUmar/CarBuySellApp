@@ -30,15 +30,16 @@ public class BranchController {
     @RequestMapping(value = "/admin/branch", method = RequestMethod.GET)
     public ModelAndView branches(ModelAndView model) {
         List<Branch> branches = branchService.all();
+        System.out.println(branches.get(0).getName());
         model.addObject("branches",branches);
-        model.setViewName("branch");
+        model.setViewName("admin/branch");
         return model;
     }
     
     @RequestMapping(value = "/admin/branch/create", method = RequestMethod.GET)
     public ModelAndView create(ModelAndView model) {
         model.addObject("branch", new Branch());
-        model.setViewName("branchform");
+        model.setViewName("admin/branchform");
         return model;
     }
     
@@ -50,14 +51,14 @@ public class BranchController {
             branchService.update(branch);
         }
         
-        return "branch";
+        return "admin/branch";
     }
     
     @RequestMapping(value = "/admin/branch/edit/{id}", method = RequestMethod.GET)
     public ModelAndView edit(@PathVariable("id") int id, ModelAndView model) {
         Branch branch = branchService.branch(id);
         model.addObject("branch", branch);
-        model.setViewName("branchform");
+        model.setViewName("admin/branchform");
         return model;
     }
     

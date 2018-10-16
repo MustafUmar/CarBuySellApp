@@ -31,13 +31,13 @@ public class Branch {
     @Column(name = "address")
     private String address;
     
-    @Column(name = "city")
+    @Column(name = "city", nullable = true)
     private String city;
     
-    @Column(name = "country")
+    @Column(name = "country", nullable = true)
     private String country;
     
-    @Column(name = "geoloc")
+    @Column(name = "geoloc", nullable = true)
     private String geoloc;
 
     public int getId() {

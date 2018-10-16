@@ -7,3 +7,7 @@
 .sidemenu-layout .admin-container {
     flex: 1;
 }
+
+.admin-container {
+    padding: 2rem 2rem;
+}
