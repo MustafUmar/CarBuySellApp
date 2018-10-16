@@ -1,7 +1,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<!DOCTYPE html>
 <t:wrapper>
     <jsp:body>
         <h1>Cars</h1>

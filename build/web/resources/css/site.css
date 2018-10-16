@@ -1,0 +1,9 @@
+.sidemenu-layout {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.sidemenu-layout .admin-container {
+    flex: 1;
+}
