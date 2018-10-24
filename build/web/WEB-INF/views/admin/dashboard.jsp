@@ -5,16 +5,9 @@
 
 <t:admintag>
     <jsp:body>
-        <c:if test="${param.error != null and param.error eq true}">
-            <div style="width:60%;margin: 0 auto;padding: 8px;">
-                <font color="red">Haba! mek una put correct credentials</font>
-            </div>
-        </c:if>
-        <form method="post" action="<c:url value="admin/login" />">
-            <h1>Admin</h1>
-            <sec:authorize access="isAuthenticated()">
-                <div><h1>Welcome, <sec:authentication property="name"/></h1></div>
-            </sec:authorize>
-        </form>
+        <h1>Admin</h1>
+        <sec:authorize access="isAuthenticated()">
+            <div><h1>Welcome, <sec:authentication property="name"/></h1></div>
+        </sec:authorize>
     </jsp:body>
 </t:admintag>

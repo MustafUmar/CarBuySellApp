@@ -28,6 +28,7 @@ body {
 header {
     /*grid-column: span 2;*/
     background-color: #7095b9;
+    padding: 1rem;
 }
 
 main {

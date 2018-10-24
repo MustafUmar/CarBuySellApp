@@ -8,6 +8,10 @@
     flex: 1;
 }
 
+.sidemenu {
+    width: 160px;
+}
+
 .admin-container {
     padding: 2rem 2rem;
 }

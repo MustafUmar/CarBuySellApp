@@ -23,4 +23,6 @@
             <%--@include file="/WEB-INF/views/segment/footer.jsp"--%>
         </footer>
     </body>
+<!--    <script src="${pageContext.request.contextPath}/resources/js/vue.min.js" />-->
+    <!--<script src="${pageContext.request.contextPath}/resources/js/app.js" />-->
 </html>

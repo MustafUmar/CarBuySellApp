@@ -2,10 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<t:wrapper>
+<t:admintag>
     <jsp:body>
+        <h2>New Admin</h2>
         <c:url var="actionForm" value="/admin/new"/>
-        <form method="post" action="${actionForm}">
+        <form class="form" method="post" action="${actionForm}">
             <div>
                 <label>First Name:</label>
                 <spring:bind path="admin.firstname">
@@ -42,4 +43,4 @@
             </div>
         <form>
     </jsp:body>
-</t:wrapper>
+</t:admintag>

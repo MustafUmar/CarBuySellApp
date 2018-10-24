@@ -16,16 +16,32 @@
     <http name="admin" pattern="/admin/**" auto-config="true" >
         <intercept-url pattern="/admin/login" access="isAnonymous()"/>
         <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')"/>
-<!--        <intercept-url pattern="/admin/dashboard" access="hasRole('ROLE_ADMIN')"/>-->
+        <intercept-url pattern="/admin/dashboard" access="hasRole('ROLE_ADMIN')"/>
         <form-login login-page="/admin/login"
-                    default-target-url="/admin/dashboard"
+                    authentication-success-handler-ref="adminSuccessTargetUrl"
                     login-processing-url="/admin/login"
                     authentication-failure-url="/admin/login?error=true"/>
         <logout 
             logout-url="/admin/logout"
             logout-success-url="/admin/login"
             invalidate-session="true"
-            delete-cookies="true"/>
+            delete-cookies="JSESSIONID"/>
+        <access-denied-handler error-page="/admin/login" />
+    </http>
+    
+    <http name="manager" pattern="/mg/**" auto-config="true" >
+        <intercept-url pattern="/admin/login" access="isAnonymous()"/>
+        <intercept-url pattern="/**" access="hasRole('ROLE_MANAGER')"/>
+<!--        <intercept-url pattern="/admin/dashboard" access="hasRole('ROLE_ADMIN')"/>-->
+        <form-login login-page="/admin/login"
+                    authentication-success-handler-ref="adminSuccessTargetUrl"
+                    login-processing-url="/admin/login"
+                    authentication-failure-url="/admin/login?error=true"/>
+        <logout 
+            logout-url="/admin/logout"
+            logout-success-url="/admin/login"
+            invalidate-session="true"
+            delete-cookies="JSESSIONID"/>
         <access-denied-handler error-page="/admin/login" />
     </http>
     
@@ -88,5 +104,8 @@
     <beans:bean id="AdminUDS" class="security.AdminUDS"/>
     
     <beans:bean id="passencoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+    
+    <!--authentication-success-handler-ref="authSuccessHandler"-->
+    <beans:bean id="adminSuccessTargetUrl" class="security.AdminAuthenticationSuccessHandler"/>
 
 </beans:beans>

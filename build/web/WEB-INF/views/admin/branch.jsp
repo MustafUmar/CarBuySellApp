@@ -13,6 +13,7 @@
                 <c:forEach items="${branches}" var="branch">
                     <tr>
                         <td>${branch.name} -- ${branch.address}</td>
+                        <td><a href="${pageContext.request.contextPath}/admin/branch/edit/${branch.id}">Edit</a></td>
                     </tr>
                 </c:forEach>
             </table>

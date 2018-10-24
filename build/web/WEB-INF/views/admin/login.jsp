@@ -4,7 +4,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <sec:authorize access="isAuthenticated()">
-    <% response.sendRedirect("dashboard"); %>
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
+        <% response.sendRedirect(getServletContext().getContextPath()+"/admin/dashboard"); %>
+    </sec:authorize>
+    <sec:authorize access="hasRole('ROLE_MANAGER')">
+        <% response.sendRedirect(getServletContext().getContextPath()+"/mg/dashboard"); %>
+    </sec:authorize>
 </sec:authorize>
 <t:wrapper>
     <jsp:body>

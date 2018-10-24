@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import service.BranchService;
 
 /**
@@ -51,7 +52,8 @@ public class BranchController {
             branchService.update(branch);
         }
         
-        return "admin/branch";
+//        return "redirect:admin/branch";
+        return "redirect:/admin/branch";
     }
     
     @RequestMapping(value = "/admin/branch/edit/{id}", method = RequestMethod.GET)

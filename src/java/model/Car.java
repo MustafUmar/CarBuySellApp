@@ -5,11 +5,15 @@
  */
 package model;
 
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -27,6 +31,29 @@ public class Car {
     
     @Column(name ="make")
     private String make;
+    
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Model> models;
+    
+    public void addModel(Model model) {
+        models.add(model);
+        model.setCar(this);
+    }
+    
+    public void removeModel(Model model) {
+        models.remove(model);
+        model.setCar(null);
+    }
+    
+
+    public List<Model> getModels() {
+        return models;
+    }
+
+    public void setModels(List<Model> models) {
+        this.models = models;
+    }
+    
 
     public int getId() {
         return id;

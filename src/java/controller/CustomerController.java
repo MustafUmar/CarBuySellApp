@@ -39,7 +39,7 @@ public class CustomerController {
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public String newAccount(HttpServletRequest request, @ModelAttribute("customer") Customer customer) {
         customerService.register(request,customer);
-        return "home";
+        return "redirect:/home";
     }
     
     

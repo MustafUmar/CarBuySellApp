@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.Admin;
 import model.Manager;
 import model.User;
@@ -39,6 +40,23 @@ public class AdminDAO {
         return user;
     }
     
+    public Admin getAdmin(int id) {
+        return sessionfactory.getCurrentSession().find(Admin.class, id);
+    }
+    
+    
+    public List<Manager> getManagers() {
+        List<Manager> managers = sessionfactory.getCurrentSession().createQuery(
+                "select m "+
+                "from Manager m "+
+                "join fetch m.branch b", Manager.class)
+                .getResultList();
+        return managers;
+    }
+    
+    public Manager getManager(int id) {
+        return sessionfactory.getCurrentSession().find(Manager.class, id);
+    }
     
     public void createAdmin(Object cl, User user) {
         

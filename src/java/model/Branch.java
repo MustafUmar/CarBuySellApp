@@ -5,12 +5,18 @@
  */
 package model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -39,6 +45,23 @@ public class Branch {
     
     @Column(name = "geoloc", nullable = true)
     private String geoloc;
+    
+    @OneToOne(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    private Manager manager;
+    
+    public void addManager(Manager manager) {
+        manager.setBranch(this);
+        this.manager = manager;
+    }
+    
+    public void removeManager() {
+        if(manager != null) {
+            manager.setBranch(null);
+            this.manager = null;
+        }
+    }
+    
 
     public int getId() {
         return id;

@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2018 at 03:02 PM
--- Server version: 10.1.16-MariaDB
+-- Generation Time: Oct 24, 2018 at 12:40 PM
+-- Server version: 10.3.8-MariaDB
 -- PHP Version: 7.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -39,7 +39,32 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `firstname`, `lastname`, `email`, `phone`) VALUES
-(5, 'Umar', 'M', 'umar@example.com', '000000');
+(10, 'Umar', 'M', 'umar@example.com', '000000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branches`
+--
+
+CREATE TABLE `branches` (
+  `id` int(11) NOT NULL,
+  `name` varchar(225) NOT NULL,
+  `address` varchar(225) NOT NULL,
+  `city` varchar(80) DEFAULT NULL,
+  `country` varchar(80) DEFAULT NULL,
+  `geoloc` varchar(225) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `branches`
+--
+
+INSERT INTO `branches` (`id`, `name`, `address`, `city`, `country`, `geoloc`) VALUES
+(1, 'EastSide', 'Lagos', NULL, NULL, NULL),
+(2, 'Southern', 'PH', NULL, NULL, NULL),
+(7, 'Western', 'Uk', NULL, NULL, NULL),
+(10, 'Skyline', 'Cotonou', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -50,16 +75,45 @@ INSERT INTO `admins` (`id`, `firstname`, `lastname`, `email`, `phone`) VALUES
 CREATE TABLE `cardetails` (
   `id` int(11) NOT NULL,
   `model_id` int(10) UNSIGNED NOT NULL,
-  `mileage` int(11) NOT NULL,
+  `branch_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(225) NOT NULL,
+  `year` varchar(6) NOT NULL,
+  `mileage` bigint(11) NOT NULL,
   `engine` varchar(50) NOT NULL,
   `transmission` varchar(50) NOT NULL,
   `drivetrain` varchar(20) NOT NULL,
   `fueltype` varchar(20) NOT NULL,
-  `bodytype` varchar(20) NOT NULL,
+  `cartype` varchar(20) NOT NULL,
   `psng_count` int(10) UNSIGNED NOT NULL,
-  `interior_color` varchar(20) NOT NULL,
-  `exterior_color` varchar(20) NOT NULL
+  `interior_color` varchar(100) NOT NULL,
+  `exterior_color` varchar(100) NOT NULL,
+  `price` int(11) NOT NULL,
+  `status` varchar(15) NOT NULL,
+  `neworused` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cardetails`
+--
+
+INSERT INTO `cardetails` (`id`, `model_id`, `branch_id`, `name`, `year`, `mileage`, `engine`, `transmission`, `drivetrain`, `fueltype`, `cartype`, `psng_count`, `interior_color`, `exterior_color`, `price`, `status`, `neworused`) VALUES
+(2, 38, 10, '4.2 Spyder quattro', '2014', 7492, '4.2L V8 32V GDI DOHC', '7-shift automatic', 'AWD', 'Gasoline', 'Supercar', 2, 'Titanium Gray', 'Brilliant Red', 32400000, 'approved', 'new'),
+(3, 38, 10, '5.2 quattro', '2010', 35503, '5.2L V10 40V GDI DOHC', '6-shift automatic', 'AWD', 'Gasoline', 'Supercar', 2, 'Luxor Beige', 'Blue Metallic', 27358200, 'approved', 'used'),
+(4, 38, 10, 'V10', '2017', 17602, 'Premium Unleaded V-10 5.2 L/318', '7-shift manual', 'AWD', 'Gasoline', 'Supercar', 2, 'Black', 'Ara Blue Crystal Effect', 44999640, 'approved', 'new'),
+(5, 49, 10, '4.0T Plus quattro', '2017', 17322, '4.0L V8 32V GDI DOHC Twin Turbo', '8-shift automatic', 'AWD', 'Gasoline', 'Sedan', 4, 'Black / Arras Red', 'Glacier White Metallic', 32328000, 'approved', 'new'),
+(6, 60, 10, 'M235 i', '2014', 6137, '3.0L I6 24V GDI DOHC Turbo', '8-shift automatic', 'RWD', 'Gasoline', 'Sedan', 4, 'Black', 'Mineral Gray Metallic', 9716400, 'approved', 'used'),
+(7, 60, 10, 'M5 Base', '2018', 236, '4.4L V8 32V GDI DOHC Twin Turbo', '8-shift automatic', 'AWD', 'Gasoline', 'Sedan', 4, 'Smoke White / Black', 'Alpine White', 45531000, 'approved', 'new'),
+(8, 60, 10, 'M5 Base', '2015', 62627, 'Twin Turbo Premium Unleaded V-8 4.4 L/268', '7-shift automatic', 'RWD', 'Gasoline', 'Sedan', 4, 'Black', 'Monte Carlo Blue Metallic', 16194600, 'approved', 'used'),
+(9, 67, 10, 'Italia', '2014', 1543, 'Premium Unleaded V-8 4.5 L/275', '7-shift manual', 'RWD', 'Gasoline', 'Supercar', 2, 'Nero', ' Bianco Avus', 82076400, 'approved', 'new'),
+(10, 84, 10, 'FF', '2015', 12307, 'Premium Unleaded V-12 6.3 L/382', '7-shift manual', 'RWD', 'Gasoline', 'Supercar', 2, 'Nero', 'Nero Daytona Metallic', 63716400, 'approved', 'used'),
+(11, 87, 10, 'EX-L', '2016', 13363, '2.4L 4 Cyl', '5-shift automatic', 'FWD', 'Gasoline', 'Sedan', 4, 'Black', 'Crystal Black Pearl', 7722000, 'approved', 'used'),
+(12, 88, 10, 'LX', '2016', 23400, '2.0L I4 16V MPFI DOHC', 'Automatic CVT', 'FWD', 'Gasoline', 'Sedan', 4, 'Black', 'Silver', 5364000, 'approved', 'used'),
+(13, 171, 10, 'LX', '2017', 6178, '2.4L I4 16V GDI DOHC', 'Automatic CVT', 'AWD', 'Gasoline', 'SUV', 4, 'Gray', 'Gunmetal Metallic', 7776000, 'approved', 'used'),
+(14, 107, 10, 'C 43 Base 4MATIC', '2017', 13356, '3.0L V6 24V GDI DOHC Twin Turbo', '9-shift automatic', 'AWD', 'Gasoline', 'Sedan', 4, 'Black', 'Black', 17208000, 'approved', 'used'),
+(15, 125, 10, 'S 550 4MATIC', '2016', 14328, '4.7L Biturbo V8 Engine', '8-shift automatic', 'AWD', 'Gasoline', 'Sedan', 4, 'Black', 'Iridium Silver Metallic', 28728000, 'approved', 'used'),
+(16, 135, 10, 'SE', '2015', 35698, '2.5L I4 16V MPFI DOHC', '6-shift automatic', 'FWD', 'Gasoline', 'Sedan', 4, 'Black', 'Predawn Gray Mica', 6113880, 'approved', 'used'),
+(17, 137, 10, 'S Plus', '2015', 83573, '4 Cylinder', '5-shift manual', 'FWD', 'Gasoline', 'Sedan', 4, 'Black', 'Alpine White', 3940920, 'approved', 'used'),
+(18, 135, 10, 'LE', '2017', 14642, '2.5L I4 16V PDI DOHC', '8-shift automatic', 'FWD', 'Gasoline', 'Sedan', 4, 'Black', 'Celestial Silver Metallic', 6767640, 'approved', 'used');
 
 -- --------------------------------------------------------
 
@@ -207,6 +261,14 @@ CREATE TABLE `managers` (
   `phone` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `managers`
+--
+
+INSERT INTO `managers` (`id`, `branch_id`, `firstname`, `lastname`, `email`, `phone`) VALUES
+(2, 7, 'Abba', 'Tete', 'abba@example.com', '111222'),
+(3, 10, 'Mustapha', 'Umar', 'um@example.com', '111111');
+
 -- --------------------------------------------------------
 
 --
@@ -215,11 +277,172 @@ CREATE TABLE `managers` (
 
 CREATE TABLE `models` (
   `id` int(11) NOT NULL,
-  `car_id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(155) NOT NULL,
-  `added_by` int(10) UNSIGNED NOT NULL,
-  `status` tinyint(4) NOT NULL
+  `carid` int(10) UNSIGNED NOT NULL,
+  `name` varchar(155) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `models`
+--
+
+INSERT INTO `models` (`id`, `carid`, `name`) VALUES
+(15, 2, '164'),
+(16, 2, '4C'),
+(17, 2, '4C Spider'),
+(18, 2, '8c Competizione'),
+(19, 2, '8c Spider'),
+(20, 2, 'Guilia'),
+(21, 2, 'Spider'),
+(22, 2, 'Stelvio'),
+(23, 3, 'DB7'),
+(24, 3, 'DB9'),
+(25, 3, 'Vantage'),
+(26, 3, 'Vanquish'),
+(27, 4, 'A3'),
+(28, 4, 'A4'),
+(29, 4, 'A5'),
+(30, 4, 'A6'),
+(31, 4, 'A7'),
+(32, 4, 'A8'),
+(33, 4, 'Q3'),
+(34, 4, 'Q5'),
+(35, 4, 'Q7'),
+(36, 4, 'Q8'),
+(37, 4, 'Quattro'),
+(38, 4, 'R8'),
+(39, 4, 'RS 3'),
+(40, 4, 'RS 4'),
+(41, 4, 'RS 5'),
+(42, 4, 'RS 6'),
+(43, 4, 'RS 7'),
+(44, 4, 'S3'),
+(45, 4, 'S4'),
+(46, 4, 'S5'),
+(47, 4, 'S6'),
+(48, 4, 'S7'),
+(49, 4, 'S8'),
+(50, 4, 'TT'),
+(51, 4, 'TT RS'),
+(52, 6, '1-series'),
+(53, 6, '2-series'),
+(54, 6, '3-series'),
+(55, 6, '4-series'),
+(56, 6, '5-series'),
+(57, 6, '6-series'),
+(58, 6, '7-series'),
+(59, 6, '8-series'),
+(60, 6, 'M-series'),
+(61, 6, 'X-series'),
+(62, 20, '348'),
+(63, 20, '360 Modena'),
+(64, 20, '360 Spider'),
+(65, 20, '456 GT'),
+(66, 20, '456 M'),
+(67, 20, '458 Italia'),
+(68, 20, '458 Spider'),
+(69, 20, '488 Spider'),
+(70, 20, '512 M'),
+(71, 20, '512 TR'),
+(72, 20, '550'),
+(73, 20, '575 M'),
+(74, 20, '599'),
+(75, 20, '612 Scaglietti'),
+(76, 20, 'California'),
+(77, 20, 'Challenge Stradale'),
+(78, 20, 'Enzo'),
+(79, 20, 'F12berlinetta'),
+(80, 20, 'F355'),
+(81, 20, 'F40'),
+(82, 20, 'F430'),
+(83, 20, 'F50'),
+(84, 20, 'FF'),
+(85, 20, 'Mondial'),
+(86, 20, 'Testarossa'),
+(87, 24, 'Accord'),
+(88, 24, 'Civic'),
+(89, 24, 'Crosstaur'),
+(90, 24, 'Element'),
+(91, 24, 'Odyssey'),
+(92, 24, 'Pilot'),
+(93, 24, 'Prelude'),
+(94, 36, 'ES'),
+(95, 36, 'GS'),
+(96, 36, 'GX'),
+(97, 36, 'IS'),
+(98, 36, 'LC'),
+(99, 36, 'LFA'),
+(100, 36, 'LS'),
+(101, 36, 'LX'),
+(102, 36, 'NX'),
+(103, 36, 'RC'),
+(104, 36, 'RX'),
+(105, 36, 'SC'),
+(106, 45, '190'),
+(107, 45, 'AMG'),
+(108, 45, 'B-Class'),
+(109, 45, 'C'),
+(110, 45, 'CL-Class'),
+(111, 45, 'CLA'),
+(112, 45, 'CLK'),
+(113, 45, 'CLS'),
+(114, 45, 'E'),
+(115, 45, 'G'),
+(116, 45, 'GL'),
+(117, 45, 'GLA'),
+(118, 45, 'GLC'),
+(119, 45, 'GLE'),
+(120, 45, 'GLK'),
+(121, 45, 'GLS'),
+(122, 45, 'M-Class'),
+(123, 45, 'Maybach'),
+(124, 45, 'R-Class'),
+(125, 45, 'S'),
+(126, 45, 'SL'),
+(127, 45, 'SLC'),
+(128, 45, 'SLK'),
+(129, 45, 'SLR'),
+(130, 45, 'SLS'),
+(131, 45, 'Sprinter'),
+(132, 72, '4Runner'),
+(133, 72, '86'),
+(134, 72, 'Avalon'),
+(135, 72, 'Camry'),
+(136, 72, 'Celica'),
+(137, 72, 'Corolla'),
+(138, 72, 'Cressida'),
+(139, 72, 'Highlander'),
+(140, 72, 'Land Cruzer'),
+(141, 72, 'Matrix'),
+(142, 72, 'Mirai'),
+(143, 72, 'MR2'),
+(144, 72, 'Pickup'),
+(145, 72, 'Previa'),
+(146, 72, 'Prius'),
+(147, 72, 'RAV4'),
+(148, 72, 'Sequioa'),
+(149, 72, 'Sienna'),
+(150, 72, 'Tacoma'),
+(151, 72, 'Tundra'),
+(152, 72, 'Venza'),
+(153, 72, 'Yaris'),
+(154, 75, 'Atlas'),
+(155, 75, 'Beetle'),
+(156, 75, 'Cabrio'),
+(157, 75, 'CC'),
+(158, 75, 'Corado'),
+(159, 75, 'Eurovan'),
+(160, 75, 'Fox'),
+(161, 75, 'GLI'),
+(162, 75, 'Golf'),
+(163, 75, 'Golf GTI'),
+(164, 75, 'GTI'),
+(165, 75, 'Jetta'),
+(166, 75, 'Passat'),
+(167, 75, 'Phaeton'),
+(168, 75, 'R32'),
+(169, 75, 'Tiguan'),
+(170, 75, 'Touareg'),
+(171, 24, 'CR-V');
 
 -- --------------------------------------------------------
 
@@ -240,7 +463,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `userid`, `role`) VALUES
-(5, 'umar@example.com', '$2a$10$yXOya67orvSTVOdwd7QnquppFRm5oBD1iQz/JnJktPL3EYq9DQECW', 5, 'ROLE_ADMIN');
+(11, 'umar@example.com', '$2a$10$QuED3aSlRDFGuJRB.Hw02uVjWS63.hhvWZe8PTVDc0./pyuL4A6DS', 10, 'ROLE_ADMIN'),
+(12, 'abba@example.com', '$2a$10$bUG5iZ6kVEdCuovV1ViaYuknymjP0JZUbiNVSiHel/oTd.hZbxGTu', 2, 'ROLE_MANAGER'),
+(13, 'um@example.com', '$2a$10$p.IFC9cKCnCpeqM/vydScORYNXNysIWidTxs4E8NWsHvvgxZmB/ca', 3, 'ROLE_MANAGER');
 
 --
 -- Indexes for dumped tables
@@ -250,6 +475,12 @@ INSERT INTO `users` (`id`, `username`, `password`, `userid`, `role`) VALUES
 -- Indexes for table `admins`
 --
 ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `branches`
+--
+ALTER TABLE `branches`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -302,17 +533,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `branches`
+--
+ALTER TABLE `branches`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `cardetails`
 --
 ALTER TABLE `cardetails`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `cars`
 --
 ALTER TABLE `cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 --
 -- AUTO_INCREMENT for table `customers`
 --
@@ -327,17 +563,17 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `managers`
 --
 ALTER TABLE `managers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `models`
 --
 ALTER TABLE `models`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
