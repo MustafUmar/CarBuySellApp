@@ -6,9 +6,11 @@
 package controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import vessel.SearchObj;
 
 /**
  *
@@ -19,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
     
     @RequestMapping(method = RequestMethod.GET)
-    public String index() {
-        return "index";
+    public ModelAndView index(ModelAndView model) {
+        model.addObject("sch", new SearchObj());
+        model.setViewName("index");
+        return model;
     }
     
 }

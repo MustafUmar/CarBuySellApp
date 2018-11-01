@@ -4,3 +4,6 @@ nbproject/
 *.properties
 *.sql
 /dist/
+/search/
+*.sql
+build/web/WEB-INF/classes/config/carbsdb.sql

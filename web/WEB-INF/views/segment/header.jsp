@@ -1,5 +1,10 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <div>
+    <div>
+        <a href="${pageContext.request.contextPath}/" style="color: white;">
+            Home
+        </a>
+    </div>
     <div style="float:right">
         <sec:authorize access="!isAuthenticated()">
             <button>Login</button>

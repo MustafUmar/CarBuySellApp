@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2018 at 12:40 PM
+-- Generation Time: Nov 01, 2018 at 05:03 PM
 -- Server version: 10.3.8-MariaDB
 -- PHP Version: 7.0.9
 
@@ -234,6 +234,18 @@ INSERT INTO `customers` (`id`, `firstname`, `lastname`, `phone_num`, `email`, `p
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customer_orders`
+--
+
+CREATE TABLE `customer_orders` (
+  `id` int(11) NOT NULL,
+  `cardet_id` int(10) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employees`
 --
 
@@ -447,6 +459,35 @@ INSERT INTO `models` (`id`, `carid`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `cust_id` int(10) UNSIGNED NOT NULL,
+  `payment_status` varchar(12) NOT NULL,
+  `order_status` varchar(12) NOT NULL,
+  `totalprice` decimal(12,2) NOT NULL,
+  `date_order` datetime NOT NULL,
+  `date_paid` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_delivery`
+--
+
+CREATE TABLE `order_delivery` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `status` varchar(12) NOT NULL,
+  `date_delivered` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -502,6 +543,12 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `customer_orders`
+--
+ALTER TABLE `customer_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `employees`
 --
 ALTER TABLE `employees`
@@ -517,6 +564,12 @@ ALTER TABLE `managers`
 -- Indexes for table `models`
 --
 ALTER TABLE `models`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -555,6 +608,11 @@ ALTER TABLE `cars`
 ALTER TABLE `customers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT for table `customer_orders`
+--
+ALTER TABLE `customer_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
@@ -569,6 +627,11 @@ ALTER TABLE `managers`
 --
 ALTER TABLE `models`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --

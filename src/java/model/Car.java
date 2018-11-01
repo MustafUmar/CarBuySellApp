@@ -15,12 +15,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 /**
  *
  * @author MustiU
  */
 @Entity
+@Indexed
 @Table(name = "cars")
 public class Car {
     
@@ -30,8 +38,12 @@ public class Car {
     private int id;
     
     @Column(name ="make")
+    @Field
     private String make;
     
+    @IndexedEmbedded
+//    for cardet
+    @ContainedIn
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Model> models;
     

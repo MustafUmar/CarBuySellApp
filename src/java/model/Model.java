@@ -18,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 /**
  *
@@ -32,14 +35,21 @@ public class Model {
     @Column(name="id", nullable=false, unique=true)
     private int id;
     
+    @Field
     @Column(name="name")
     private String name;
     
+    @ContainedIn
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Car.class)
     @JoinColumn(name = "carid", referencedColumnName = "id")
+//    for cardet
+    @IndexedEmbedded(includePaths = {"make"})
     private Car car;
     
     @OneToMany(mappedBy="model", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+    @IndexedEmbedded( prefix = "cardet_", includePaths = {"name","year","cartype"})
+//    for cardet
+    @ContainedIn
     private List<CarDetail> cardetails;
     
     public void addCarDetail(CarDetail cd) {

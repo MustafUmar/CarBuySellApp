@@ -117,9 +117,6 @@ public class AdminController {
 //        System.out.println(formModel.getBrin());
 //        return "redirect:/admin/manager/create";
 //    }
-
-    
-    
     
 //    @InitBinder
 //    public void initBinder(WebDataBinder dataBinder) {

@@ -19,11 +19,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 /**
  *
  * @author MustiU
  */
+@Indexed
 @Entity
 @Table(name = "cardetails")
 public class CarDetail {
@@ -33,9 +38,11 @@ public class CarDetail {
     @Column(name="id", nullable=false, unique=true)
     private int id;
     
+    @Field
     @Column(name = "name")
     private String name;
     
+    @Field
     @Column(name = "year")
     private String year;
     
@@ -54,6 +61,7 @@ public class CarDetail {
     @Column(name = "fueltype")
     private String fueltype;
     
+    @Field
     @Column(name = "cartype")
     private String cartype;
     
@@ -78,6 +86,8 @@ public class CarDetail {
 //    @Enumerated(EnumType.ORDINAL)
     private String newused;
     
+    @IndexedEmbedded
+    @ContainedIn
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")
     private Model model;

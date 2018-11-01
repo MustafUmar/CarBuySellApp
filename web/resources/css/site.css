@@ -15,3 +15,30 @@
 .admin-container {
     padding: 2rem 2rem;
 }
+
+/*--------------search-------------------*/
+.searchbar {
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
+}
+.search-container {
+    padding: 1rem .5rem;
+    background-color: #eff0f1;
+    margin: .3rem 0;
+    display: flex;
+    border-radius: 5px;
+}
+.search-container > label {
+    padding-right: .6rem; 
+}
+.cargview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1.2rem;
+}
+.box-content {
+    border: 1px solid grey;
+    border-radius: 4px;
+    padding: .2rem .8rem;
+}

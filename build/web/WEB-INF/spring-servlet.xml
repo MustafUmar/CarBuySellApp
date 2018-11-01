@@ -33,10 +33,13 @@
     <bean id="sessionFactoryBean" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
     	<property name="dataSource" ref="datasource"/>
     	<property name="hibernateProperties">
-	         <props>
+	    <props>
                  <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                  <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-	         </props>
+                 <prop key="hibernate.search.default.directory_provider">${hibernate.search_dir}</prop>
+                 <prop key="hibernate.search.default.indexBase">${hibernate.indexBase}</prop>
+                 <!--<prop key="hibernate.search.indexing_strategy">${hibernate.indexStrategy}</prop>-->
+	    </props>
         </property>
         <property name="packagesToScan" value="model" />
     </bean>
