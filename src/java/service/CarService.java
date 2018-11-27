@@ -10,8 +10,10 @@ import java.util.List;
 import model.Car;
 import model.CarDetail;
 import model.Model;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vessel.CarModelList;
 
 /**
@@ -19,6 +21,7 @@ import vessel.CarModelList;
  * @author MustiU
  */
 @Service
+@Transactional
 public class CarService {
     
     @Autowired
@@ -48,6 +51,22 @@ public class CarService {
     public Model carmodellist(int modid) {
         return carDAO.getCarModelList(modid);
     }
+    
+    public List<CarDetail> carswithlimit() {
+        List<CarDetail> cars = carDAO.getCarListWithLimit();
+        for (CarDetail car : cars) {
+            Hibernate.initialize(car.getModel().getCar());
+        }
+        return cars;
+    }
+    
+    public CarDetail car(int id) {
+        CarDetail car = carDAO.getCarById(id);
+        Hibernate.initialize(car.getModel().getCar());
+        return car;
+    }
+    
+    
     
     public void addcar(int brid, int modid, CarDetail cardet) {
         carDAO.newCarDetail(brid, modid, cardet);

@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import service.CustomerService;
 
 /**
  *
@@ -27,11 +28,12 @@ import org.springframework.stereotype.Service;
 public class CustomerUDS implements UserDetailsService {
     
     @Autowired
-    private CustomerDAO customerDAO;
+    private CustomerService customerService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Customer customer = customerDAO.getCustomerByUsername(email);
+        System.out.println(customerService);
+        Customer customer = customerService.loginCustomer(email);
         if(customer == null)
             throw new UsernameNotFoundException("Invalid Credentials");
         
@@ -40,8 +42,8 @@ public class CustomerUDS implements UserDetailsService {
 //        for (Role role : user.getRoles()){
 //            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 //        }
-        return new org.springframework.security.core.userdetails.User(
-                customer.getEmail(), customer.getPassword(), grantedAuthorities
+        return new CustomerPrincipal(
+                customer.getEmail(), customer.getPassword(), true, true, true, true, grantedAuthorities, customer
         );
     }
     

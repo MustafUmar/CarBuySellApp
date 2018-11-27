@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<t:wrapper>
+<t:usertag>
     <jsp:body>
         <c:url var="actionForm" value="/user/register"/>
         <form:form class="form" method="post" action="${actionForm}" modelAttribute="customer">
@@ -32,4 +32,4 @@
             </div>
         </form:form>
     </jsp:body>
-</t:wrapper>
+</t:usertag>

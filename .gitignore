@@ -3,7 +3,12 @@ nbproject/
 *.class
 *.properties
 *.sql
-/dist/
-/search/
-*.sql
-build/web/WEB-INF/classes/config/carbsdb.sql
+dist/
+search/
+config/
+tool/
+static/
+test.html
+error.html
+node_modules/
+db.js

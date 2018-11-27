@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2018 at 12:40 PM
+-- Generation Time: Nov 27, 2018 at 01:41 AM
 -- Server version: 10.3.8-MariaDB
 -- PHP Version: 7.0.9
 
@@ -19,6 +19,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `carbsdb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `addresses`
+--
+
+CREATE TABLE `addresses` (
+  `id` int(11) NOT NULL,
+  `cust_id` int(10) UNSIGNED DEFAULT NULL,
+  `street` text NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `state` varchar(50) NOT NULL,
+  `country` varchar(50) NOT NULL,
+  `other_details` text DEFAULT NULL,
+  `prev_owner` int(10) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`id`, `cust_id`, `street`, `city`, `state`, `country`, `other_details`, `prev_owner`) VALUES
+(8, 1, 'Zone4', 'Abuja', 'FCT', 'Nigeria', '', 0),
+(9, 1, 'Kawo', 'Kaduna', 'Kaduna', 'Nigeria', '', 0);
 
 -- --------------------------------------------------------
 
@@ -230,6 +255,27 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `firstname`, `lastname`, `phone_num`, `email`, `password`) VALUES
 (1, 'Fill', 'Up', '111222', 'fill@example.com', '$2a$10$Ueufu0U9oDAwVv1nZeTH7.sUUi79nYV3jr1MrnHWZPCMUftLYrT9q');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_orders`
+--
+
+CREATE TABLE `customer_orders` (
+  `id` int(11) NOT NULL,
+  `order_id` int(10) UNSIGNED NOT NULL,
+  `cardet_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customer_orders`
+--
+
+INSERT INTO `customer_orders` (`id`, `order_id`, `cardet_id`) VALUES
+(41, 21, 2),
+(42, 21, 6),
+(43, 22, 11);
 
 -- --------------------------------------------------------
 
@@ -447,6 +493,109 @@ INSERT INTO `models` (`id`, `carid`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `order_number` varchar(265) NOT NULL,
+  `cust_id` int(10) UNSIGNED NOT NULL,
+  `payment_id` int(10) UNSIGNED NOT NULL,
+  `order_status` varchar(12) NOT NULL,
+  `totalprice` decimal(12,2) NOT NULL,
+  `date_order` datetime NOT NULL,
+  `cancel_reason` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `order_number`, `cust_id`, `payment_id`, `order_status`, `totalprice`, `date_order`, `cancel_reason`) VALUES
+(21, '69364349764', 1, 21, 'CANCELED', '42116400.00', '2018-11-25 19:09:24', 'Found a better deal.'),
+(22, '75052719201', 1, 22, 'PENDING', '7722000.00', '2018-11-27 00:30:52', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_delivery`
+--
+
+CREATE TABLE `order_delivery` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) UNSIGNED NOT NULL,
+  `address_id` int(10) UNSIGNED NOT NULL,
+  `delivery_man` int(10) UNSIGNED DEFAULT NULL,
+  `status` varchar(12) NOT NULL,
+  `begin_date` datetime DEFAULT NULL,
+  `duration` int(11) DEFAULT NULL,
+  `date_delivered` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_delivery`
+--
+
+INSERT INTO `order_delivery` (`id`, `order_id`, `address_id`, `delivery_man`, `status`, `begin_date`, `duration`, `date_delivered`) VALUES
+(18, 21, 8, NULL, 'PENDING', NULL, 0, NULL),
+(19, 22, 8, NULL, 'PENDING', NULL, 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` int(11) NOT NULL,
+  `customer_id` int(10) UNSIGNED NOT NULL,
+  `charge_id` varchar(100) NOT NULL,
+  `service` varchar(100) NOT NULL,
+  `status` varchar(15) NOT NULL,
+  `amount` decimal(14,2) NOT NULL,
+  `paymentDate` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `customer_id`, `charge_id`, `service`, `status`, `amount`, `paymentDate`) VALUES
+(21, 1, '6b0805ce13fd', 'psp1', 'PAID', '42116400.00', '2018-11-25 19:09:47'),
+(22, 1, '32f67af6a928', 'psp1', 'PAID', '7722000.00', '2018-11-27 00:31:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `soldcars`
+--
+
+CREATE TABLE `soldcars` (
+  `id` int(11) NOT NULL,
+  `make_id` int(10) UNSIGNED NOT NULL,
+  `model_id` int(10) UNSIGNED NOT NULL,
+  `branch_id` int(10) UNSIGNED NOT NULL,
+  `carname` varchar(250) NOT NULL,
+  `caryear` varchar(6) NOT NULL,
+  `mileage` bigint(20) NOT NULL,
+  `engine` varchar(100) NOT NULL,
+  `transmission` varchar(100) NOT NULL,
+  `drivetrain` varchar(50) NOT NULL,
+  `fueltype` varchar(20) NOT NULL,
+  `cartype` varchar(50) NOT NULL,
+  `psng_count` int(11) NOT NULL,
+  `interior_color` varchar(100) NOT NULL,
+  `exterior_color` varchar(100) NOT NULL,
+  `price` decimal(10,0) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `neworused` varchar(8) NOT NULL,
+  `buyer_id` int(10) UNSIGNED NOT NULL,
+  `order_id` int(11) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -470,6 +619,12 @@ INSERT INTO `users` (`id`, `username`, `password`, `userid`, `role`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `admins`
@@ -502,6 +657,12 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `customer_orders`
+--
+ALTER TABLE `customer_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `employees`
 --
 ALTER TABLE `employees`
@@ -520,6 +681,32 @@ ALTER TABLE `models`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `order_number` (`order_number`);
+
+--
+-- Indexes for table `order_delivery`
+--
+ALTER TABLE `order_delivery`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `charge_id` (`charge_id`);
+
+--
+-- Indexes for table `soldcars`
+--
+ALTER TABLE `soldcars`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -529,6 +716,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `addresses`
+--
+ALTER TABLE `addresses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `admins`
 --
@@ -555,6 +747,11 @@ ALTER TABLE `cars`
 ALTER TABLE `customers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT for table `customer_orders`
+--
+ALTER TABLE `customer_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+--
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
@@ -569,6 +766,26 @@ ALTER TABLE `managers`
 --
 ALTER TABLE `models`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT for table `order_delivery`
+--
+ALTER TABLE `order_delivery`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT for table `soldcars`
+--
+ALTER TABLE `soldcars`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --

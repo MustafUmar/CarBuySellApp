@@ -29,7 +29,7 @@
         <access-denied-handler error-page="/admin/login" />
     </http>
     
-    <http name="manager" pattern="/mg/**" auto-config="true" >
+    <http name="manager" pattern="/mg/**" auto-config="true">
         <intercept-url pattern="/admin/login" access="isAnonymous()"/>
         <intercept-url pattern="/**" access="hasRole('ROLE_MANAGER')"/>
 <!--        <intercept-url pattern="/admin/dashboard" access="hasRole('ROLE_ADMIN')"/>-->
@@ -45,18 +45,19 @@
         <access-denied-handler error-page="/admin/login" />
     </http>
     
-    <http auto-config="true">
+    <http auto-config="true" entry-point-ref="ajaxAwareAuth">
 <!--        <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>-->
         <intercept-url pattern="/login" access="isAnonymous()"/>
         <intercept-url pattern="/register" access="permitAll"/>
+        <intercept-url pattern="/rpservice" access="permitAll"/>
         <intercept-url pattern="/home" access="hasRole('ROLE_USER')"/>
-        <intercept-url pattern="/user/" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/user/**" access="hasRole('ROLE_USER')"/>
         <!--<intercept-url pattern="/" access="permitAll"/>-->
         <form-login login-page="/login"
                     default-target-url="/home"
                     login-processing-url="/login"
-                    always-use-default-target="true"
                     authentication-failure-url="/login?error=true"/>
+        <!--always-use-default-target="true"-->
         <logout 
             logout-url="/user/logout"
             logout-success-url="/"
@@ -107,5 +108,10 @@
     
     <!--authentication-success-handler-ref="authSuccessHandler"-->
     <beans:bean id="adminSuccessTargetUrl" class="security.AdminAuthenticationSuccessHandler"/>
+    
+    <beans:bean id="ajaxAwareAuth" class="security.AjaxAwareAuthEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/login"/>
+        <!--<beans:property name="loginFormUrl" value="/login" />-->
+    </beans:bean>
 
 </beans:beans>

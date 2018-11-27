@@ -2,19 +2,28 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.Type;
 
 /**
@@ -23,6 +32,14 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "orders")
+@FilterDef(
+    name="orderstatus",
+    parameters=@ParamDef(
+        name="orderstat",
+        type="String"
+    )
+)
+@Filter(name = "orderstatus", condition = "order_status = :orderstat")
 public class Order {
     
     @Id
@@ -30,11 +47,12 @@ public class Order {
     @Column(name="id", nullable=false, unique=true)
     private int id;
     
-    @Column(name = "payment_status")
-    private String paymentStatus;
+    @Column(name = "order_number")
+    private String orderNumber;
     
+    @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
-    private String orderStatus;
+    private OrderStatus orderStatus;
     
     @Column(name = "totalprice")
     @Type(type = "org.hibernate.type.BigDecimalType")
@@ -44,13 +62,68 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
     
-    @Column(name = "date_paid")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date paymentDate;
+    @Column(name = "cancel_reason")
+    private String cancelReason;
     
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
-    private List<CustomerOrder> cutomerOrders;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cust_id")
+    private Customer customer;
+    
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<CarOrder> carOrders = new ArrayList<>();
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+    
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private OrderDelivery delivery;
+    
+    public void addPayment(Payment payment) {
+        payment.setOrder(this);
+        this.payment = payment;
+    }
+    
+    public void addCarOrder(CarOrder carorder) {
+        this.carOrders.add(carorder);
+        carorder.setOrder(this);
+    }
+    
+    public void removeCarOrder(CarOrder carOrder) {
+        carOrders.remove(carOrder);
+        carOrder.setOrder(null);
+    }
+    
+    public void addDelivery(OrderDelivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
+    
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public OrderDelivery getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(OrderDelivery delivery) {
+        this.delivery = delivery;
+    }
+    
     public int getId() {
         return id;
     }
@@ -59,19 +132,19 @@ public class Order {
         this.id = id;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
+    public String getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
-    public String getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -91,21 +164,19 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
+    public List<CarOrder> getCarOrders() {
+        return carOrders;
     }
 
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
-    public List<CustomerOrder> getCutomerOrders() {
-        return cutomerOrders;
-    }
-
-    public void setCutomerOrders(List<CustomerOrder> cutomerOrders) {
-        this.cutomerOrders = cutomerOrders;
+    public void setCarOrders(List<CarOrder> carOrders) {
+        this.carOrders = carOrders;
     }
     
-    
+     public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 }

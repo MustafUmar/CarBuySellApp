@@ -17,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class AdminPrincipal<E> extends User{
 
     private E admin;
-//    private String firstname;
-//    private String lastname;
     
     public AdminPrincipal(String username, String password, boolean enabled, boolean accountNonExpired,
             boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
@@ -32,22 +30,6 @@ public class AdminPrincipal<E> extends User{
 //            String firstname, String lastname) {
 //        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 //        this.firstname = firstname;
-//        this.lastname = lastname;
-//    }
-
-//    public String getFirstname() {
-//        return firstname;
-//    }
-//
-//    public void setFirstname(String firstname) {
-//        this.firstname = firstname;
-//    }
-//
-//    public String getLastname() {
-//        return lastname;
-//    }
-//
-//    public void setLastname(String lastname) {
 //        this.lastname = lastname;
 //    }
 

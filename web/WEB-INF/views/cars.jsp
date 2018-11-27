@@ -1,7 +1,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<t:wrapper>
+<t:usertag>
     <jsp:body>
         <h1>Cars</h1>
         <ul>
@@ -10,4 +10,4 @@
             </c:forEach>
         </ul>
     </jsp:body>
-</t:wrapper>
+</t:usertag>

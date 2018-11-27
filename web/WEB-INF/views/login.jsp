@@ -6,11 +6,11 @@
 <sec:authorize access="isAuthenticated()">
     <% response.sendRedirect("home"); %>
 </sec:authorize>
-<t:wrapper>
+<t:usertag>
     <jsp:body>
         <c:if test="${param.error != null and param.error eq true}">
             <div style="width:60%;margin: 0 auto;padding: 8px;">
-                <font color="red">Haba! mek una put correct credentials</font>
+                <font color="red">Mek una put correct credentials</font>
             </div>
         </c:if>
         <form method="post" action="<c:url value="login" />">
@@ -26,7 +26,7 @@
             <div>
                 <input type="submit" value="Submit" />
             </div>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
     </jsp:body>
-</t:wrapper>
+</t:usertag>

@@ -6,13 +6,19 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  *
@@ -20,7 +26,11 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "customers")
-public class Customer {
+//@DynamicUpdate
+@DynamicUpdate(true)
+public class Customer implements Serializable{
+    
+    private static final long serialVersionUID = 7576473295612776147L;
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -41,6 +51,25 @@ public class Customer {
     
     @Column(name = "password")
     private String password;
+    
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<Order> order;
+    
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<Address> addresses;
+    
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<Payment> payment;
+    
+    public void addAddress(Address address) {
+        addresses.add(address);
+        address.setCustomer(this);
+    }
+    
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+        address.setCustomer(null);
+    } 
 
     public int getId() {
         return id;
@@ -48,6 +77,22 @@ public class Customer {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     public String getFirstname() {
@@ -93,6 +138,14 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Payment> getPayment() {
+        return payment;
+    }
+
+    public void setPayment(List<Payment> payment) {
+        this.payment = payment;
     }
     
     

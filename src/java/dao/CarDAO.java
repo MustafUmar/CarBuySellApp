@@ -12,6 +12,10 @@ import model.CarDetail;
 import model.Model;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +26,7 @@ import vessel.CarModelList;
  * @author MustiU
  */
 @Repository
-@Transactional
+//@Transactional
 public class CarDAO {
     
     @Autowired
@@ -31,6 +35,7 @@ public class CarDAO {
     public List<Car> getCars() {
         return sessionfactory.getCurrentSession().createQuery("from Car").list();
     }
+    
     
     public Car getCar(int id) {
         Session session = sessionfactory.getCurrentSession();
@@ -78,6 +83,31 @@ public class CarDAO {
                 "where m.id = :modid", Model.class)
             .setParameter("modid", modid)
             .uniqueResult();
+    }
+    
+    public CarDetail getCarById(int id) {
+        return sessionfactory.getCurrentSession().load(CarDetail.class, id);
+//        return sessionfactory.getCurrentSession().createQuery(
+//                "select c from CarDetail " +
+//                "join c.model m "+
+//                "join m.car c "+
+//                "where c.id = :id", CarDetail.class)
+//            .setParameter("id", id)
+//            .uniqueResult();
+    }
+    
+    
+    public List<CarDetail> getCarListWithLimit() {
+        FullTextSession fullTextSession = Search.getFullTextSession(sessionfactory.getCurrentSession());
+        QueryBuilder qb = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(CarDetail.class).get();
+        org.apache.lucene.search.Query luQuery = qb.all().createQuery();
+//                .keyword()
+//                .onFields("name","model.name","model.car.make")
+//                .matching("*")
+//                .createQuery();
+        Query qr = fullTextSession.createFullTextQuery(luQuery, CarDetail.class);
+        qr.setMaxResults(10);
+        return qr.list();
     }
     
     public void newCarDetail(int brin, int modid, CarDetail cardet) {

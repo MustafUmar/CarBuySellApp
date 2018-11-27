@@ -2,7 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<t:wrapper>
+<t:usertag>
     <jsp:body>
         <h1>Search Results</h1>
         <div class="searchbar">
@@ -22,6 +22,8 @@
                                 <div>
                                     <p>Year: ${car.year}</p>
                                 </div>
+                                <cart-action v-if="contains(${car.id})"></cart-action>
+                                <buy-action v-else carid="${car.id}" @cart-action="addToCart"></buy-action>
                             </div>
                         </c:forEach>
                     </c:when>
@@ -31,22 +33,5 @@
                 </c:choose>
             
             </div>
-        
-        <script>
-            var searchbtn = document.getElementById('search')
-            var text = document.getElementById('searchtext')
-            searchbtn.onclick = searchQuery
-            text.onkeypress = function(e) {
-                if(e.keyCode == 13)
-                    searchQuery()
-            }
-            
-            function searchQuery() {
-                if(text.value !== '' && text.value !== null) {
-                    console.log('sent')
-                    window.location.href = 'http://localhost:8084/BuySellCar/searchquery?q='+text.value
-                }
-            }
-        </script>
     </jsp:body>
-</t:wrapper>
+</t:usertag>

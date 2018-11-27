@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.ContainedIn;
@@ -95,6 +96,9 @@ public class CarDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
     private Branch branch;
+    
+    @OneToOne(mappedBy = "cardet", fetch = FetchType.LAZY)
+    private CarOrder carorder;
 
     public int getId() {
         return id;
@@ -122,6 +126,14 @@ public class CarDetail {
 
     public long getMileage() {
         return mileage;
+    }
+
+    public CarOrder getCarorder() {
+        return carorder;
+    }
+
+    public void setCarorder(CarOrder carorder) {
+        this.carorder = carorder;
     }
 
     public void setMileage(long mileage) {

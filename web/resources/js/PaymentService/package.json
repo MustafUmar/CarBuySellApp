@@ -1,0 +1,17 @@
+{
+  "name": "paymentserver",
+  "version": "1.0.0",
+  "description": "Payment gateway example",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MU",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "mysql": "^2.16.0",
+    "promise": "^8.0.2",
+    "socket.io": "^2.1.1"
+  }
+}

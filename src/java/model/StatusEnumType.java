@@ -11,5 +11,8 @@ package model;
  */
 public enum StatusEnumType {
     APPROVED,
-    PENDING
+    PENDING,
+    SUCCESS,
+    CANCELED,
+    PAID
 }
