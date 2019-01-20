@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vessel.CarModelList;
+import vessel.SearchObj;
 
 /**
  *
@@ -52,12 +53,18 @@ public class CarService {
         return carDAO.getCarModelList(modid);
     }
     
-    public List<CarDetail> carswithlimit() {
-        List<CarDetail> cars = carDAO.getCarListWithLimit();
-        for (CarDetail car : cars) {
+    public SearchObj<CarDetail> carswithlimit(int page, int brid) {
+        SearchObj<CarDetail> result = new SearchObj<>();
+        if(page > 1) result.setPageNumber(page);
+        
+//        List<CarDetail> cars = carDAO.getCarListWithLimit(result.getPage());
+        result = carDAO.getCarListWithLimit(result, brid);
+        for (CarDetail car : result.getResult()) {
+            car.setCarorder(null);
             Hibernate.initialize(car.getModel().getCar());
+            Hibernate.initialize(car.getBranch());
         }
-        return cars;
+        return result;
     }
     
     public CarDetail car(int id) {
@@ -71,7 +78,6 @@ public class CarService {
     public void addcar(int brid, int modid, CarDetail cardet) {
         carDAO.newCarDetail(brid, modid, cardet);
     }
-    
     
     
     

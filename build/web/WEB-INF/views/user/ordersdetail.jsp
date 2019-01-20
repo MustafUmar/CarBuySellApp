@@ -21,16 +21,21 @@
                                 <td>${order.orderNumber}</td>
                                 <td>
                                     <div class="caritems">
-                                    <c:forEach var="item" items="${order.carOrders}">
-                                        <div>
-                                            ${item.cardet.year}
-                                            ${item.cardet.model.car.make}
-                                            ${item.cardet.model.name}
-                                            ${item.cardet.name}
-                                            <p>
-                                                <strong>Price: NGN <fmt:formatNumber type="number" value="${item.cardet.price}"/></strong>
-                                            </p>
-                                        </div>
+                                    <c:forEach var="branch" items="${order.branches}">
+                                        <c:forEach var="car" items="${branch.carOrders}">
+                                            <div>
+                                                ${car.cardet.year}
+                                                ${car.cardet.model.car.make}
+                                                ${car.cardet.model.name}
+                                                ${car.cardet.name}
+                                                <p>
+                                                    <strong>Price: NGN <fmt:formatNumber type="number" value="${car.cardet.price}"/></strong>
+                                                </p>
+                                                <p>
+                                                    <em>Location: ${branch.branch.name}</em>
+                                                </p>
+                                            </div>
+                                        </c:forEach>
                                     </c:forEach>
                                     </div>
                                 </td>

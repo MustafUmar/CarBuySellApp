@@ -9,23 +9,28 @@ import dao.CarDAO;
 import dao.CustomerDAO;
 import dao.OrderDAO;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import model.Address;
+import model.BranchOrder;
 import model.Car;
 import model.CarDetail;
 import model.Customer;
 import model.CarOrder;
 import model.Order;
 import model.OrderDelivery;
-import model.OrderStatus;
+import constants.OrderStatus;
 import model.Payment;
-import model.StatusEnumType;
+import constants.StatusEnumType;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -121,19 +126,35 @@ public class CustomerService {
             order.setTotalprice(amount);
             order.setOrderStatus(OrderStatus.PENDING);
             
+            List<BranchOrder> boset = new ArrayList<>();
             for (CartItem car : cars) {
-                CarDetail c = carDAO.getCarById(car.getCarid());
+                CarDetail c = carDAO.getCarWithBranch(car.getCarid());
+                if(c == null) {
+                    System.out.println("Car not found");
+                    return false;
+                }
                 CarOrder carorder = new CarOrder();
                 carorder.setCardet(c);
-                carorder.setOrder(order);
-                System.out.println();
-//                order.addCarOrder(carorder);
-                order.getCarOrders().add(carorder);
+                Optional<BranchOrder> opbo = boset.stream()
+                        .filter(bos -> bos.getBranch().equals(c.getBranch())).findFirst();
+                if(opbo.isPresent()) {
+                    BranchOrder bo = opbo.get();
+                    bo.addCarOrder(carorder);
+                } else {
+                    BranchOrder bo = new BranchOrder(order, c.getBranch());
+                    bo.setOrderStatus(OrderStatus.PENDING);
+                    bo.setOverseer(c.getBranch().getManager());
+                    bo.addCarOrder(carorder);
+                    boset.add(bo);
+                }
+                
             }
+            
+            order.setBranches(boset);
             
             OrderDelivery delivery = new OrderDelivery();
             delivery.setAddress(address);
-            delivery.setStatus(OrderStatus.PENDING);
+            delivery.setStatus(StatusEnumType.PENDING);
             order.addDelivery(delivery);
             order.setCustomer(customer);
             order.setPayment(payment);

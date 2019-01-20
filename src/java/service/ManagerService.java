@@ -6,6 +6,7 @@
 package service;
 
 import dao.ManagerDAO;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,4 +19,9 @@ public class ManagerService {
     
     @Autowired
     private ManagerDAO mgdao;
+    
+    public Map<String, Object[]> dashData() {
+        return mgdao.loadDashdata();
+    }
+    
 }

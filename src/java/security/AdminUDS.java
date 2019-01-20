@@ -6,9 +6,11 @@
 package security;
 
 import dao.AdminDAO;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import model.Admin;
+import model.Employee;
 import model.Manager;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ import org.springframework.stereotype.Service;
  * @author MustiU
  */
 @Service
-public class AdminUDS implements UserDetailsService {
+public class AdminUDS implements UserDetailsService, Serializable {
 
     @Autowired
     AdminDAO adminDAO;
@@ -49,6 +51,12 @@ public class AdminUDS implements UserDetailsService {
             principal = new AdminPrincipal<Manager>(
                     user.getUsername(), user.getPassword(), true, true, true, true,
                     grantedAuthorities, mg);
+        }
+        else if(user.getRole().equals("ROLE_EMPLOYEE")) {
+            Employee em = adminDAO.getEmployee(user.getUserid());
+            principal = new AdminPrincipal<Employee>(
+                    user.getUsername(), user.getPassword(), true, true, true, true,
+                    grantedAuthorities, em);
         }
         else
             throw new UsernameNotFoundException("User not found");

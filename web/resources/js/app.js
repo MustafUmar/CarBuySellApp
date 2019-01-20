@@ -1,5 +1,5 @@
 function searchInit() {
-    var searchbtn = document.getElementById('search')
+    var searchbtn = document.getElementById('searchsubmit')
     var text = document.getElementById('searchtext')
     if(searchbtn !== null && text !== null && searchbtn !== undefined && text !== undefined) {
         searchbtn.addEventListener('click', searchQuery)
@@ -24,11 +24,12 @@ window.onload = searchInit
 
 
 
-requirejs(['http://localhost:8084/BuySellCar/resources/js/ven/rqconfig.js'], function() {
+//requirejs(['http://localhost:8084/BuySellCar/resources/js/ven/rqconfig.js'], function() {
 
     
 //console.log(requirejs(['modal'], function(modal){return modal}))
-    requirejs(['axios','tb','profile','error','modal'], function(axios,tb,profile,error){
+    requirejs(['axios','tb','profile','error','modal','multiform','sellcar','shoppingcart'],
+        function(axios,tb,profile,error,modal,multistep,sellcar,shoppingcart){
         
         axios.defaults.baseURL = 'http://localhost:8084/BuySellCar/'
         axios.defaults.headers.common = {
@@ -51,37 +52,53 @@ requirejs(['http://localhost:8084/BuySellCar/resources/js/ven/rqconfig.js'], fun
 
         Vue.component('buy-action', {
             props:['carid'],
-            template: `<button @click="$emit('cart-action', carid)">Buy Car</button>`,
+            template: `
+                
+//                    <button @click="$emit('cart-action', carid)">Buy Car</button>
+                `,
         })
 
         Vue.component('profile', profile)
         Vue.component('tabs',tb.tabs)
         Vue.component('tab',tb.tab)
         Vue.component('error',error)
+        Vue.component('sellcar',sellcar)
         Vue.component('modal',modal)
+        Vue.component('multiform', multistep.multiform)
+        Vue.component('formpart', multistep.formpart)
+        Vue.component('shoppingcart', shoppingcart)
 
         Vue.component('shopitems', {
             //<modal v-if="showmodal" @close="showmodal = false"></modal>
             props:['cart'],
-            template: `
-                        <div style="width: 70%; margin: 0 auto;">
-                            <div v-if="cart.length > 0">
-                                <div v-for="(car,i) in cart" style="border-bottom: 1px solid black;">
-                                    <p>{{car.make}} {{car.modelname}} {{car.typename}}</p>
-                                    <p>{{car.price}}</p>
-                                    <button @click="$emit('remove_item', car.carid, i)">Remove from cart</button>
-                                </div>
-                                <button><a href="http://localhost:8084/BuySellCar/user/order">Place Order</a></button>
-                                <button>Book for Test Drive</button>
-                                <button @click="$emit('clear_all')">Remove all</button>
+            template: 
+                `
+                    <div style="width: 70%; margin: 0 auto;">
+                        <div v-if="cart.length > 0">
+                            <div v-for="(car,i) in cart" style="border-bottom: 1px solid black;">
+                                <p>{{car.make}} {{car.modelname}} {{car.typename}}</p>
+                                <p>{{car.price}}</p>
+                                <button @click="$emit('remove_item', car.carid, i)">Remove from cart</button>
+                            </div>
+                            <button><a href="http://localhost:8084/BuySellCar/user/order">Place Order</a></button>
+                            <button>Book for Test Drive</button>
+                            <button @click="$emit('clear_all')">Remove all</button>
 
-                                
-                            </div>
-                            <div v-else>
-                                <div>No cars added to cart.</div>
-                            </div>
+
                         </div>
-                      `,
+                        <div v-else>
+                            <div>No cars added to cart.</div>
+                        </div>
+                    </div>
+                `,
+        }),
+        Vue.filter('currency', function (value) {
+          if (!value || isNaN(value)) return ''
+          value = parseInt(value)
+          let x, n = 0
+          const re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')'
+          return 'NGN '+value.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,')
+          // return '₦'+value.toFixed().replace(/\d(?=(\d{3})+\.)/g, '$&,').toString()
         })
 
         new Vue({
@@ -106,12 +123,15 @@ requirejs(['http://localhost:8084/BuySellCar/resources/js/ven/rqconfig.js'], fun
                 }
             },
             mounted() {
-              axios.get('cart').then(res => {
-                  this.cart = res.data.cars
+                axios.get('cart').then(res => {
+                    this.cart = res.data.cars
+                    console.log('cart')
     //              this.count = this.cart.length
-              })
-              
-              searchInit()
+                })
+                
+                requirejs(['/BuySellCar/resources/js/ven/kl-scripts.js'])
+                
+                searchInit()
             },
             methods: {
                 addToCart(id) {
@@ -127,8 +147,7 @@ requirejs(['http://localhost:8084/BuySellCar/resources/js/ven/rqconfig.js'], fun
                 removeFromCart(id,i) {
                     axios.post('cart/remove/'+id).then(res => {
                         console.log(res.data)
-                        this.cart.pop(i)
-    //                    this.cart.splice(i,1)
+                        this.cart.splice(i,1)
                     }).catch(err => {
                         if(err.response.status)
                             if(err.response.status === 401)
@@ -168,13 +187,13 @@ requirejs(['http://localhost:8084/BuySellCar/resources/js/ven/rqconfig.js'], fun
                             if(this.order.address === null || this.order.address === undefined || this.order.address === '') {
                                 this.error.show = true
                                 this.error.message = 'Please select address!'
-                            }
+                            } else this.error.show = false
                             return this.error.show
                         case 'payment':
                             if(this.order.payment === null || this.order.payment === undefined || this.order.payment === '') {
                                 this.error.show = true
                                 this.error.message = 'Please select payment option!'
-                            }
+                            } else this.error.show = false
                             return this.error.show
                     }
                 },
@@ -201,9 +220,14 @@ requirejs(['http://localhost:8084/BuySellCar/resources/js/ven/rqconfig.js'], fun
                     this.showmodal = true
                 }
             },
+            computed:{
+                totalVal() {
+                    return this.cart.reduce((a,c) => a+c.price,0)
+                }
+            }
     //        components: {
     //            BuyAction
     //        }
         })
     })
-})
+//})

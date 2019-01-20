@@ -6,6 +6,7 @@
 package security;
 
 import dao.CustomerDAO;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import model.Customer;
@@ -25,7 +26,7 @@ import service.CustomerService;
  * @author MustiU
  */
 @Service
-public class CustomerUDS implements UserDetailsService {
+public class CustomerUDS implements UserDetailsService, Serializable {
     
     @Autowired
     private CustomerService customerService;

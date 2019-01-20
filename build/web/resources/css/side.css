@@ -1,0 +1,86 @@
+.dashview {
+    display: grid;
+    grid-template-columns: repeat(2, 14rem);
+    grid-gap: 40px;
+    width: 60%;
+    margin: 0 auto;
+}
+.dashview .box {
+    border: 2px solid #7095b9;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-box-shadow: 0px 3px 10px 1.5px rgba(209,209,209,1);
+    -moz-box-shadow: 0px 3px 10px 1.5px rgba(209,209,209,1);
+    box-shadow: 0px 3px 10px 1.5px rgba(209,209,209,1);
+}
+.dashview .box:hover {
+    -webkit-box-shadow: 0px 3px 10px 3px rgba(199,195,199,1);
+    -moz-box-shadow: 0px 3px 10px 3px rgba(199,195,199,1);
+    box-shadow: 0px 3px 10px 3px rgba(199,195,199,1);
+}
+.dashview .box-desc {
+    flex-grow: 2;
+    padding: 2rem 2rem;
+    text-align: center;
+}
+.dashview .box-title {
+    background-color: #7095b9;
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    /*font-weight: bold;*/
+}
+.block {
+    margin: .6rem 0;
+    -webkit-box-shadow: 0px 2px 5px 1px rgba(168,166,168,1);
+    -moz-box-shadow: 0px 2px 5px 1px rgba(168,166,168,1);
+    box-shadow: 0px 2px 5px 1px rgba(168,166,168,1);
+}
+.block .block-title {
+    background-color: #cccccc;
+    padding: .8rem 1rem;
+}
+.block .block-content {
+    padding: .8rem 1rem;
+}
+/*----------------------order----------------------*/
+
+/*----------------------orderdetail----------------------*/
+.order-nav {
+    margin-bottom: 8px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: -2px;
+}
+.order-nav a {
+    padding: .6rem .7rem;
+    outline: 2px ridge #dedede;
+    background-color: #a68ca8;
+    color: white;
+}
+.order-nav a:hover {
+    background-color: #cfc3cf;
+    color: black;
+}
+.order-items {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid lightsteelblue;
+    border-right: 1px solid lightsteelblue;
+}
+.order-items > div:not(:last-child) {
+    border-bottom: .8px solid darkgray;
+}
+.order-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+.order-buttons button:not(:last-child) {
+    margin-right: 10px;
+}
+.order-title-item {
+    border: 1.5px outset lightsteelblue;
+}

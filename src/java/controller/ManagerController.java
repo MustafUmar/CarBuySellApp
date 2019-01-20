@@ -39,12 +39,13 @@ import vessel.FormModelList;
 public class ManagerController {
     
     @Autowired
-    private ManagerService mngservice;
+    private ManagerService mgservice;
     @Autowired
     private CarService carService;
     
     @RequestMapping(value = "dashboard", method = RequestMethod.GET)
-    public String managers() {
+    public String managers(ModelMap model) {
+        model.addAttribute("dashdata",mgservice.dashData());
         return "manager/dashboard";
     }
     

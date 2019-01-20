@@ -13,7 +13,7 @@
                         <%@include file="/WEB-INF/views/segment/sidebar.jsp" %>
                     </nav>
                 </div>
-                <div class="admin-container">
+                <div id="adapp" class="admin-container">
                     <jsp:doBody />
                 </div>
             </div>
@@ -22,5 +22,9 @@
             <%-- Include footer.jsp --%>
             <%--@include file="/WEB-INF/views/segment/footer.jsp"--%>
         </footer>
+        
+        <script src="${pageContext.request.contextPath}/resources/js/ven/vue.js" ></script>
+        <script src="${pageContext.request.contextPath}/resources/js/ven/require.js" ></script>
+        <script src="${pageContext.request.contextPath}/resources/client/js/adappb.js" ></script>
     </jsp:body>
 </t:wrapper>

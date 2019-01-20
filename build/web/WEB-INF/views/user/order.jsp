@@ -59,16 +59,22 @@
                             <div class="tabfixedframe">
                                 <h1>Choose payment option</h1>
                                 <div>
-                                    <input type="radio" name="payment" value="psp1" v-model="order.payment"/>
-                                    <label>Pay with credit card</label>
+                                    <label>
+                                        <input type="radio" name="payment" value="psp1" v-model="order.payment"/>
+                                        Pay with credit card
+                                    </label>
                                 </div>
                                 <div>
-                                    <input type="radio" name="payment" value="psp2" v-model="order.payment" disabled/>
-                                    <label>Pay option #2</label>
+                                    <label>
+                                        <input type="radio" name="payment" value="psp2" v-model="order.payment" disabled/>
+                                        Pay option #2
+                                    </label>
                                 </div>
                                 <div>
-                                    <input type="radio" name="payment" value="psp3" v-model="order.payment" disabled/>
-                                    <label>Pay option #3</label>
+                                    <label>
+                                        <input type="radio" name="payment" value="psp3" v-model="order.payment" disabled/>
+                                        Pay option #3
+                                    </label>
                                 </div>
                             </div>
                         </tab>

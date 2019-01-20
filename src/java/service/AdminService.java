@@ -8,6 +8,7 @@ package service;
 import dao.AdminDAO;
 import java.util.List;
 import model.Branch;
+import model.Employee;
 import model.Manager;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,20 @@ public class AdminService {
         }
         adminDAO.createAdmin(mg, user);
     }
+    
+//    public List<Employee> employees() {
+//        return adminDAO.getEmployees();
+//    }
+    
+    public void createEmployee(Employee em, User user, int brin, List<Branch> br) {
+        if(brin -1 >=0 && brin <= br.size())
+            em.setBranch(br.get(brin - 1));
+        adminDAO.createAdmin(em, user);
+    }   
+    
+    public boolean localSaveFile(String loc) {
+        return adminDAO.localSaveFile(loc);
+    }
+    
     
 }

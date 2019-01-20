@@ -5,21 +5,26 @@
  */
 package dao;
 
+import java.io.FileWriter;
 import java.util.List;
 import model.Branch;
 import model.Car;
 import model.CarDetail;
 import model.Model;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.query.Query;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import vessel.CarModelList;
+import vessel.SearchObj;
 
 /**
  *
@@ -34,6 +39,10 @@ public class CarDAO {
     
     public List<Car> getCars() {
         return sessionfactory.getCurrentSession().createQuery("from Car").list();
+    }
+    
+    public List<Model> getAllModels() {
+        return sessionfactory.getCurrentSession().createQuery("from Model").list();
     }
     
     
@@ -87,27 +96,56 @@ public class CarDAO {
     
     public CarDetail getCarById(int id) {
         return sessionfactory.getCurrentSession().load(CarDetail.class, id);
-//        return sessionfactory.getCurrentSession().createQuery(
-//                "select c from CarDetail " +
-//                "join c.model m "+
-//                "join m.car c "+
-//                "where c.id = :id", CarDetail.class)
-//            .setParameter("id", id)
-//            .uniqueResult();
+    }
+    
+    public long getCount() {
+        return (long) sessionfactory.getCurrentSession().createQuery(
+            "select count(c) from CarDetail c "
+        ).uniqueResult();
     }
     
     
-    public List<CarDetail> getCarListWithLimit() {
+    public CarDetail getCarWithBranch(int id) {
+            return sessionfactory.getCurrentSession().createQuery(
+                "select c from CarDetail c " +
+                "join fetch c.branch b "+
+                "join fetch b.manager m "+
+                "where c.id = :id", CarDetail.class)
+            .setParameter("id", id)
+            .uniqueResult();
+    }
+    
+    
+    
+    public SearchObj<CarDetail> getCarListWithLimit(SearchObj<CarDetail> sobj, int brid) {
+        
+//        if(brid > 0)
+//            sessionfactory.getCurrentSession().enableFilter("branchFilter").setParameter("brid", brid);
         FullTextSession fullTextSession = Search.getFullTextSession(sessionfactory.getCurrentSession());
         QueryBuilder qb = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(CarDetail.class).get();
         org.apache.lucene.search.Query luQuery = qb.all().createQuery();
-//                .keyword()
-//                .onFields("name","model.name","model.car.make")
-//                .matching("*")
-//                .createQuery();
-        Query qr = fullTextSession.createFullTextQuery(luQuery, CarDetail.class);
-        qr.setMaxResults(10);
-        return qr.list();
+        
+        System.out.println("Brid"+brid);
+//        if(brid > 0)
+//            fullTextSession.enableFilter("branchFilter").setParameter("brid", brid);
+//        else
+//            fullTextSession.disableFilter("branchFilter");
+        
+        org.hibernate.search.FullTextQuery qr = fullTextSession.createFullTextQuery(luQuery, CarDetail.class, Branch.class);
+        if(brid > 0)
+            qr.enableFullTextFilter("branch").setParameter("brid", brid);
+        else
+            qr.disableFullTextFilter("branch");
+        
+        sobj.setMaxPageSize(qr.getResultSize());
+        
+        if(sobj.getPageNumber() > sobj.getMaxPageSize())
+            sobj.setPageNumber(1);
+        qr.setFirstResult((sobj.getPageNumber() - 1) * sobj.getResultPerPage());
+        qr.setMaxResults(sobj.getResultPerPage());
+        sobj.setResult(qr.list());
+        
+        return sobj;
     }
     
     public void newCarDetail(int brin, int modid, CarDetail cardet) {
@@ -118,8 +156,6 @@ public class CarDAO {
         cardet.setBranch(branch);
         session.persist(cardet);
     }
-    
-    
     
     
 }

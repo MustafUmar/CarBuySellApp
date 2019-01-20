@@ -1,6 +1,7 @@
 
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "addresses")
-public class Address {
+public class Address implements Serializable {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

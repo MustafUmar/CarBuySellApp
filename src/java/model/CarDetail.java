@@ -5,8 +5,11 @@
  */
 package model;
 
+import filter.BranchFilter;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,11 +20,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Facet;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
@@ -32,6 +46,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 @Indexed
 @Entity
 @Table(name = "cardetails")
+@FullTextFilterDef(name = "branch", impl = BranchFilter.class)
 public class CarDetail {
     
     @Id
@@ -62,7 +77,8 @@ public class CarDetail {
     @Column(name = "fueltype")
     private String fueltype;
     
-    @Field
+    @Field(analyze = Analyze.NO)
+    @Facet
     @Column(name = "cartype")
     private String cartype;
     
@@ -95,10 +111,15 @@ public class CarDetail {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
+//    @Fetch(FetchMode.JOIN)
+//    @Filter(name = "branchFilter", condition = "id = :brid")
     private Branch branch;
     
-    @OneToOne(mappedBy = "cardet", fetch = FetchType.LAZY)
-    private CarOrder carorder;
+//    @OneToOne(mappedBy = "cardet", fetch = FetchType.LAZY)
+//    @LazyToOne( LazyToOneOption.FALSE )
+    @OneToMany(mappedBy = "cardet", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private CarOrder carorder;
+    private List<CarOrder> carorder;
 
     public int getId() {
         return id;
@@ -129,11 +150,13 @@ public class CarDetail {
     }
 
     public CarOrder getCarorder() {
-        return carorder;
+//        return carorder;
+        return carorder.isEmpty() ? null : carorder.get(0);
     }
 
     public void setCarorder(CarOrder carorder) {
-        this.carorder = carorder;
+//        this.carorder = carorder;
+        this.carorder.add(carorder);
     }
 
     public void setMileage(long mileage) {

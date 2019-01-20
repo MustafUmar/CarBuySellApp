@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
+import model.BranchOrder;
+import model.Employee;
+import model.Manager;
 import model.Order;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -25,14 +28,22 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import security.AdminPrincipal;
 import security.CustomerPrincipal;
+import service.BranchService;
+import service.ManagerService;
 import service.OrderService;
+import vessel.FormModelObj;
 import vessel.ShoppingCart;
 
 /**
@@ -44,12 +55,16 @@ public class OrderController {
     
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private BranchService branchService;
+//    @Autowired
+//    private ManagerService mgService;
     
     @RequestMapping(value = "rpservice", method = RequestMethod.GET)
     public String paymentConfirm(HttpSession session, @RequestParam("pkey") String key, @RequestParam("status") String status) {
         System.out.println(key);
         if(status.equals("success")) {
-            boolean ok = orderService.updateOrder(key);
+            boolean ok = orderService.updatePayment(key);
             if(ok) {
                 session.setAttribute("cart", new ShoppingCart());
                 return "redirect:/user/order-success";
@@ -74,6 +89,37 @@ public class OrderController {
             return "redirect:/user/order-error";
         
     }
+    
+    @RequestMapping(value = "/mg/orders", method = RequestMethod.GET)
+    public String viewOrders(Authentication auth, ModelMap model, HttpSession session) {
+        AdminPrincipal adp =(AdminPrincipal) auth.getPrincipal();
+        Manager mg = (Manager)adp.getAdmin();
+        System.out.println(session.getAttribute("mgv"));
+        Map<String,List<BranchOrder>> orders = orderService.orderlist(mg.getBranch().getId(), session);
+        model.addAttribute("orders", orders);
+        return "manager/orders";
+    }
+    
+    @RequestMapping(value = "/mg/order/{id}", method = RequestMethod.GET)
+    public String viewOrder(@PathVariable("id") int oid, Authentication auth, HttpSession session, ModelMap model) {
+        AdminPrincipal adp =(AdminPrincipal) auth.getPrincipal();
+        Manager mg = (Manager)adp.getAdmin();
+        BranchOrder order = orderService.order(oid, mg, session);
+//        BranchOrder order = orderService.order(oid, mg.getBranch().getId());
+        model.addAttribute("bo", order);
+        return "manager/orderdetail";
+    }
+    
+    @RequestMapping(value = "/mg/order/{oid}/{brid}/approve", method = RequestMethod.POST)
+    public String approveOrder(@PathVariable("oid") int oid, @PathVariable("brid") int brid, Authentication auth, ModelMap model) {
+        AdminPrincipal adp =(AdminPrincipal) auth.getPrincipal();
+        Manager mg = (Manager)adp.getAdmin();
+        BranchOrder order = orderService.approve(oid, brid, mg);
+        model.addAttribute("order", order);
+        return "redirect:/mg/order/"+oid;
+    }
+    
+    
     
     private JSONObject HttpService(String url, JSONObject payload) throws IOException {
         JSONObject json = null;

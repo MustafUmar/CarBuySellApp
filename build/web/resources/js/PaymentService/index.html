@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Feel the Pay</title>
+    <link rel="stylesheet" href="/static/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/site.css">
+    <script defer src="/static/js/all.min.js"></script>
+  </head>
+  <body>
+  	<header>
+  		<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+		  <div class="navbar-brand">
+		    <a class="navbar-item">
+		      <h2 class="title is-3 has-text-white-bis"><em>RapidPay</em></h2>
+		    </a>
+
+		    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+		      <span aria-hidden="true"></span>
+		      <span aria-hidden="true"></span>
+		      <span aria-hidden="true"></span>
+		    </a>
+
+		  </div>
+		</nav>
+  	</header>
+  <section class="section">
+    <div id="vapp" class="container">
+
+    	<!-- loading -->
+    	<div v-show="loading" class="loading-box has-background-light">
+    		<div class="loading">
+    			<div class="fa-3x"><i class="fas fa-spinner fa-spin"></i></div>
+    			<p>Loading...</p>
+    		</div>
+    	</div>
+		
+		<!-- Error container -->
+    	<div v-if="error" class="columns is-mobile is-centered">
+    		<div class="column is-half">
+    			<div class="message is-warning">
+				  <div class="message-header">
+				    <p>Error</p>
+				  </div>
+				  <div class="message-body">
+				    <p>{{errmsg}}</p>
+				    <p v-if="!(envoy !== null || envoy !== undefined)">
+				    	<a>Return to merchant site. {{envoy}}</a>
+				    </p>
+				    <p v-else-if="document.referrer && document.referrer !== ''">
+				    	<a :href="document.referrer">Return to merchant site.</a>
+				    </p>
+				    <p v-else>
+				    	Return to merchant site
+				    </p>
+				  </div>
+				</div>	
+    		</div>
+    	</div>
+		
+		<!-- Payment container -->
+		<div v-else>
+			<!-- Proceed payment -->
+			<div v-if="proceed" class="columns is-mobile">
+
+				<div class="column">
+	    			<nav class="panel">
+					  <p class="panel-heading">
+					    You are being charge for the following product(s) by BUY&SELLCARS:
+					  </p>
+					  <div v-for="product in products" class="panel-block">
+					    <span class="panel-icon">
+					      <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+					    </span>
+					    <div>
+					    	<p>{{product.year}} {{product.make}} {{product.modelname}} {{product.typename}}</p>
+						    <p><strong>NGN {{product.price | currency}}</strong></p>
+					    </div>
+					  </div>
+					  <div class="panel-block">
+					    <h4 class="title is-4">Total: NGN {{chargeInfo.amount | currency}}</h4>
+					  </div>
+					  
+					</nav>
+	    		</div>
+
+		      	<div class="column is-7">
+
+		      		<div class="card-container has-background-grey-lighter">
+		      			<h1 class="title is-size-1">RapidPay</h1>
+		      			<p v-show="show" class="subtitle is-6 has-text-danger has-text-centered">{{message}}</p>
+						
+		      			<div class="field is-horizontal">
+							<div class="field-label is-normal label-adjust">
+								<label class="label">Card Number</label>
+							</div>
+							<div class="field-body">
+								<div class="field">
+									<div class="control is-expanded has-icons-left">
+										<input class="input" type="text" v-model="card.number" maxlength="19" placeholder="0000 0000 0000 0000">
+										<span class="icon is-small is-left">
+								          <i class="fas fa-credit-card"></i>
+								        </span>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="field is-horizontal">
+							<div class="field-label is-normal label-adjust">
+							    <label class="label">Exp</label>
+							</div>
+						  <div class="field-body">
+						    <div class="field">
+						      <p class="control is-expanded has-icons-left">
+						        <input class="input" type="text" v-model="card.month" maxlength="2" placeholder="MM">
+						        <span class="icon is-small is-left">
+						          <i class="fas fa-calendar-alt"></i>
+						        </span>
+						      </p>
+						    </div>
+						    <div class="field-label is-normal">
+							    <label class="label">/</label>
+							</div>
+						    <div class="field">
+						      <p class="control is-expanded has-icons-left">
+						        <input class="input" type="text" v-model="card.year" maxlength="2" placeholder="YY">
+						        <span class="icon is-small is-left">
+						          <i class="far fa-calendar-alt"></i>
+						        </span>
+						      </p>
+						    </div>
+						    <div class="field-label is-normal">
+							    <label class="label"></label>
+							</div>
+						    <div class="field-label is-normal">
+							    <label class="label">CVC</label>
+							</div>
+						    <div class="field">
+						      <p class="control is-expanded has-icons-left">
+						        <input class="input" type="text" v-model="card.cvc" maxlength="3" placeholder="CVC">
+						        <span class="icon is-small is-left">
+						          <i class="far fa-credit-card"></i>
+						        </span>
+						      </p>
+						    </div>
+						  </div>
+						</div>
+
+						<div class="field is-grouped">
+						  <p class="control">
+						    <a @click.prevent="completePayment" class="button is-primary">
+						      Pay
+						    </a>
+						  </p>
+						  <p class="control">
+						    <a v-if="envoy" class="button is-light">
+						      Cancel
+						    </a>
+						  </p>
+						</div>
+
+			      	</div>
+
+		      	</div>
+	     	</div>
+			
+			<!-- Payment already made -->
+	     	<div v-else class="columns">
+				<div class="column">
+					<article class="message is-link">
+					  <div class="message-body">
+					    This card token has already been charged.
+					    <a :href="submitFeedback('charged_before')" class="button is-light">
+						    Click here to refer back to the commerce site.
+						</a>
+					  </div>
+					</article>
+				</div>
+			</div>
+
+		</div>
+
+
+		<!-- modal -->
+		<div :class="{'modal':true, 'is-active':success}">
+		  <div class="modal-background"></div>
+		  <div class="modal-card">
+		    <!-- <header class="modal-card-head">
+		      <p class="modal-card-title">Payment Successful</p>
+		      <button class="delete" aria-label="close"></button>
+		    </header> -->
+		    <section class="modal-card-body">
+		    	<div class="columns">
+		    		<div class="column is-2">
+		    			<div class="fa-3x has-text-primary">
+				    		<i class="fas fa-check-circle"></i>
+				    	</div>		
+		    		</div>
+		    		<div class="column is-9">
+		    			<h3 class="title is-5 success-modal-message">Payment Successful</h3>
+		    		</div>
+		    	</div>
+		    </section>
+		    <!-- <footer class="modal-card-foot">
+		    	<div class="custom-footer-modal">
+		    		<a :href="chargeInfo.returnurl" class="button is-success is-centered">Back To Merchant</a>
+		    	</div>
+		    </footer> -->
+		  </div>
+		</div>
+
+    </div>
+
+	
+  </section>
+
+  <script src="/static/js/vue.min.js" type="text/javascript"></script>
+  <script src="/static/js/axios.js" type="text/javascript"></script>
+  <script src="/static/js/site.js" type="text/javascript"></script>
+  </body>
+</html>

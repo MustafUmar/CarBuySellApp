@@ -13,7 +13,7 @@
 }
 
 .admin-container {
-    padding: 2rem 2rem;
+    padding: 0 2rem 2rem;
 }
 
 /*--------------search-------------------*/
@@ -141,6 +141,58 @@
     padding: .8rem 1rem;
     overflow: hidden;
 }
+/*------------------------pagination---------------------*/
+.pagination-box {
+    margin: 8px 0;
+    padding: .2rem 0;
+}
+.pagination-content {
+    margin: 0 auto;
+    width: 70%;
+    display: flex;
+    justify-content: center;
+}
+.pagination-content > a {
+    padding: .3rem .6rem;
+    background-color: whitesmoke;
+    border: 2px solid #a5b3bb;
+    border-radius: 3px;
+    font-weight: 100;
+    font-size: 1.2rem;
+    color: black;
+    cursor: pointer;
+}
+
+.pagination-content > a:hover {
+    background-color: #dedede;
+}
+.pagination-content > a:not(:last-child) {
+    margin-right: 5px;
+}
+.pagination-content > a.active {
+    background-color: #a5b3bb;
+    color: white;
+}
+.pagination-content > span {
+    padding: .3rem .4rem;
+    background-color: whitesmoke;
+    border: 2px solid #a5b3bb;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+/*------------------------sellcar---------------------*/
+.photo-label {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: .1rem .4rem;
+    text-align: center;
+}
+.image-view {
+    height: 110px;
+}
+
 
 /*------------------------modal---------------------*/
 

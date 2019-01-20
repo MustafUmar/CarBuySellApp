@@ -19,7 +19,7 @@
             </form:form>
         </div>
         
-        <script src="${pageContext.request.contextPath}/resources/js/vue.min.js"></script>
+<!--        <script src="${pageContext.request.contextPath}/resources/js/vue.min.js"></script>
         <script>
             new Vue({
                 el:'#modelform',
@@ -37,7 +37,7 @@
                     }
                 }
             })
-        </script>
+        </script>-->
     </jsp:body>
 </t:mgtag>
 

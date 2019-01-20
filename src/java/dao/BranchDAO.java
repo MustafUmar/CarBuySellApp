@@ -7,6 +7,7 @@ package dao;
 
 import java.util.List;
 import model.Branch;
+import model.Employee;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -41,5 +42,34 @@ public class BranchDAO {
         sessionFactory.getCurrentSession().update(branch);
     }
     
+    public List<Employee> getEmployees() {
+        List<Employee> employees = sessionFactory.getCurrentSession().createQuery(
+                "select e "+
+                "from Employee e "+
+                "join fetch e.branch", Employee.class)
+            .getResultList();
+        return employees;
+    }
     
+    public List<Employee> employeesByBranch(int brid) {
+        List<Employee> employees = sessionFactory.getCurrentSession().createQuery(
+                "select e "+
+                "from Employee e "+
+                "join fetch e.branch b "+
+                "where b.id = :br", Employee.class)
+            .setParameter("br", brid)
+            .getResultList();
+        return employees;
+    }
+    
+    public List<Employee> couriersByBranch(int brid) {
+        List<Employee> employees = sessionFactory.getCurrentSession().createQuery(
+                "select e "+
+                "from Employee e "+
+                "join fetch e.branch b "+
+                "where b.id = :br and e.designation = 'courier'", Employee.class)
+            .setParameter("br", brid)
+            .getResultList();
+        return employees;
+    }
 }

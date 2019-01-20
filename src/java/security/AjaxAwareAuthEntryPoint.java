@@ -6,6 +6,7 @@
 package security;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +23,10 @@ import org.springframework.stereotype.Component;
  * @author MustiU
  */
 
-public class AjaxAwareAuthEntryPoint extends LoginUrlAuthenticationEntryPoint{
+public class AjaxAwareAuthEntryPoint extends LoginUrlAuthenticationEntryPoint implements Serializable {
     
     private static List<String> uris = new ArrayList<>(
-            Arrays.asList("/user/prepare-order")
+            Arrays.asList("/user/prepare-order","/mg/couriers")
     );
     
     public AjaxAwareAuthEntryPoint(String loginFormUrl) {
@@ -37,8 +38,6 @@ public class AjaxAwareAuthEntryPoint extends LoginUrlAuthenticationEntryPoint{
             throws IOException, ServletException {
         
 //        request.getRequestURI().startsWith("/api/secured");
-        
-        System.out.println("header:"+request.getRequestURI());
         
         if (uris.stream().anyMatch(uri -> request.getRequestURI().contains(uri))) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");

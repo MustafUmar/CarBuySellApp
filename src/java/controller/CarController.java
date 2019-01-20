@@ -8,9 +8,13 @@ package controller;
 import java.util.List;
 import model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import service.CarService;
 
@@ -20,10 +24,12 @@ import service.CarService;
  */
 @Controller
 @RequestMapping(value = "/cars")
+@PropertySource(value= {"classpath:config/appconfig.properties"})
 public class CarController {
    
     @Autowired
     private CarService carService;
+    
     
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView cars(ModelAndView model) {
@@ -32,6 +38,5 @@ public class CarController {
         model.setViewName("cars");
         return model;
     }
-    
     
 }

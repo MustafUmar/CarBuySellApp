@@ -5,6 +5,7 @@
  */
 package security;
 
+import java.io.Serializable;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  * @author MustiU
  */
-public class AdminPrincipal<E> extends User{
+public class AdminPrincipal<E> extends User implements Serializable {
 
     private E admin;
     

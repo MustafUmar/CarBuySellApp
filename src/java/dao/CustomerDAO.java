@@ -7,6 +7,7 @@ package dao;
 
 import java.util.List;
 import model.Address;
+import model.BranchOrder;
 import model.CarOrder;
 import model.Customer;
 import model.Order;
@@ -120,11 +121,16 @@ public class CustomerDAO {
         Customer cust = session.load(Customer.class, customer.getId());
         Hibernate.initialize(cust.getOrder());
         for (Order order : cust.getOrder()) {
-            Hibernate.initialize(order.getCarOrders());
             Hibernate.initialize(order.getPayment());
-            for (CarOrder carOrder : order.getCarOrders()) {
-                Hibernate.initialize(carOrder.getCardet().getModel().getCar());
+            Hibernate.initialize(order.getBranches());
+            for (BranchOrder branch : order.getBranches()) {
+                Hibernate.initialize(branch.getCarOrders());
+                Hibernate.initialize(branch.getBranch());
+                for (CarOrder carOrder : branch.getCarOrders()) {
+                    Hibernate.initialize(carOrder.getCardet().getModel().getCar());
+                }
             }
+            
         }
         
         return cust;

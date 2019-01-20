@@ -84,9 +84,9 @@ public class CartController {
          return "cleared";
     }
     
-    @RequestMapping(value = "/user/order" ,method = RequestMethod.POST)
-    public String placeOrder(CartInfo cart) {
-        System.out.println(cart.getTotal());
-        return "user/ordersuccess";
-    }
+//    @RequestMapping(value = "/user/order" ,method = RequestMethod.POST)
+//    public String placeOrder(CartInfo cart) {
+//        System.out.println(cart.getTotal());
+//        return "user/ordersuccess";
+//    }
 }

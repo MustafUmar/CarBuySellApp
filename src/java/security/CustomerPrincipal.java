@@ -1,6 +1,7 @@
 
 package security;
 
+import java.io.Serializable;
 import java.util.Collection;
 import model.Customer;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.User;
  *
  * @author MustiU
  */
-public class CustomerPrincipal extends User {
+public class CustomerPrincipal extends User implements Serializable {
     
     private Customer user;
 //    private String firstname;

@@ -53,17 +53,17 @@
         <intercept-url pattern="/home" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/user/**" access="hasRole('ROLE_USER')"/>
         <!--<intercept-url pattern="/" access="permitAll"/>-->
-        <form-login login-page="/login"
-                    default-target-url="/home"
+        <form-login login-page="/"
+                    default-target-url="/"
                     login-processing-url="/login"
-                    authentication-failure-url="/login?error=true"/>
+                    authentication-failure-url="/?error=true"/>
         <!--always-use-default-target="true"-->
         <logout 
             logout-url="/user/logout"
             logout-success-url="/"
             invalidate-session="true"
             delete-cookies="true"/>
-        <access-denied-handler error-page="/login" />
+        <access-denied-handler error-page="/" />
     </http>
     
 <!--    <http-firewall ref="httpFirewall"/>
@@ -110,7 +110,7 @@
     <beans:bean id="adminSuccessTargetUrl" class="security.AdminAuthenticationSuccessHandler"/>
     
     <beans:bean id="ajaxAwareAuth" class="security.AjaxAwareAuthEntryPoint">
-        <beans:constructor-arg name="loginFormUrl" value="/login"/>
+        <beans:constructor-arg name="loginFormUrl" value="/"/>
         <!--<beans:property name="loginFormUrl" value="/login" />-->
     </beans:bean>
 

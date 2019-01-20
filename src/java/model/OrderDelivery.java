@@ -1,6 +1,9 @@
 
 package model;
 
+import constants.ErrorType;
+import constants.OrderStatus;
+import constants.StatusEnumType;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +35,7 @@ public class OrderDelivery {
     
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private StatusEnumType status;
     
     @Column(name = "begin_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -44,6 +47,13 @@ public class OrderDelivery {
     
     @Column(name = "duration")
     private int duration;
+    
+    @Column(name = "issue")
+//    @Enumerated(EnumType.STRING)
+    private boolean issue;
+    
+    @Column(name = "issue_desc")
+    private String issueDesc;
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -65,11 +75,11 @@ public class OrderDelivery {
         this.id = id;
     }
 
-    public OrderStatus getStatus() {
+    public StatusEnumType getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(StatusEnumType status) {
         this.status = status;
     }
 
@@ -120,6 +130,21 @@ public class OrderDelivery {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-    
+
+    public boolean isIssue() {
+        return issue;
+    }
+
+    public void setIssue(boolean issue) {
+        this.issue = issue;
+    }
+
+    public String getIssueDesc() {
+        return issueDesc;
+    }
+
+    public void setIssueDesc(String issueDesc) {
+        this.issueDesc = issueDesc;
+    }
     
 }

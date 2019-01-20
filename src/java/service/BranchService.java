@@ -8,6 +8,7 @@ package service;
 import dao.BranchDAO;
 import java.util.List;
 import model.Branch;
+import model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,18 @@ public class BranchService {
     
     public void update(Branch branch) {
         branchDAO.update(branch);
+    }
+    
+    public List<Employee> employees() {
+        return branchDAO.getEmployees();
+    }
+    
+    public List<Employee> employeesByBranch(int brid) {
+        return branchDAO.employeesByBranch(brid);
+    }
+    
+    public List<Employee> courierBranch(int brid) {
+        return branchDAO.couriersByBranch(brid);
     }
     
     

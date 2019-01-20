@@ -92,7 +92,7 @@ public class CustomerController {
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        if(auth instanceof AnonymousAuthenticationToken)
             return "login";
 //        else
@@ -126,12 +126,12 @@ public class CustomerController {
     }
     
     
-    @RequestMapping(value = "/user/cart", method = RequestMethod.GET)
+    @RequestMapping(value = "user/shopcart", method = RequestMethod.GET)
     public String cart(HttpSession session, ModelMap model) {
         ShoppingCart cart = (ShoppingCart)session.getAttribute("cart");
-        System.out.println(cart.getCars());
+//        System.out.println(cart.getCars());
 //        model.addAttribute("cart",cart);
-        return "user/cartlist";
+        return "user/cart";
     }
     
     @RequestMapping(value = "/user/orders" ,method = RequestMethod.GET)
@@ -150,7 +150,7 @@ public class CustomerController {
         Customer custwithAdd = customerService.loadAddress(custprincipal.getUser());
         model.addAttribute("addresses",custwithAdd.getAddresses());
 
-        return "user/order";
+        return "user/checkout";
     }
     
     @RequestMapping(value = "/user/prepare-order", method = RequestMethod.POST)
@@ -163,7 +163,6 @@ public class CustomerController {
             
             JSONArray jsonprod = new JSONArray(cart.getCars());
             for (int i = 0; i < jsonprod.length(); i++) {
-                System.out.println(jsonprod.getJSONObject(i).get("carid"));
                 jsonprod.getJSONObject(i).remove("carid");
             }
 //            String products = jsonprod.toString();
@@ -233,6 +232,12 @@ public class CustomerController {
         }
         return "redirect:/user/orders";
     }
+    
+    @RequestMapping(value = "user/sellcar", method = RequestMethod.GET)
+    public String sellCar(ModelMap model) {
+        return "user/sellcar";
+    }
+    
     
     
     private JSONObject HttpService(String url, JSONObject payload) throws IOException {
